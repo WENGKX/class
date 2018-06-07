@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="cn.edu.scau.dao.CommentMapper">
+ 
+ 	<!--public List<Comment> getAllcommentByBz();  -->
+ 	<select id="getAllcommentByBz" resultType="cn.edu.scau.bean.Comment">
+ 		SELECT cno,cmessage,cdate,`comment`.sno FROM `comment`,student WHERE `comment`.`sno`=student.`sno` AND student.`duty`='班长';
+ 	</select>
+ 	
+ 	
+ 	<resultMap type="cn.edu.scau.bean.Comment" id="MyCommentByStep">
+	 	<id column="cno" property="cno"/>
+	 	<result column="cmessage" property="cmessage"/>
+	 	<result column="cdate" property="cdate"/>
+	 	<!-- association定义关联对象的封装规则
+	 		select:表明当前属性是调用select指定的方法查出的结果
+	 		column:指定将哪一列的值传给这个方法
+	 		
+	 		流程：使用select指定的方法（传入column指定的这列参数的值）查出对象，并封装给property指定的属性
+	 	 -->
+	 	 <association property="student"
+	 	 select="cn.edu.scau.dao.StudentMapper.getStuBySno"
+	 	 column="sno">
+	 	 </association>
+	 </resultMap>
+	 <!--  public Comment getCommentByCno(Integer cno);-->
+ 	<select id="getCommentByCno" resultMap="MyCommentByStep"> 
+ 		select * from comment where cno=#{cno}
+ 	</select>
+ 
+ 	<!--  public List<Comment> getCommentsByMno(Integer mno);-->
+ 	<select id="getCommentsByMno" resultType="cn.edu.scau.bean.Comment">
+		SELECT cno FROM mc WHERE mno=#{mno}
+	</select>
+	
+	<!--public void deleteByCno(Integer cno);  -->
+	<delete id="deleteByCno">
+		DELETE FROM comment WHERE cno=#{cno}
+	</delete>
+	
+	<!--public void saveComment(Comment comment);  -->
+	<insert id="saveComment">
+		INSERT INTO COMMENT(cno,cmessage,cdate,sno) VALUES(#{cno},#{cmessage},#{cdate},#{student.sno})
+	</insert>
+	
+	<!--  public List<Comment> getAllcommentByMessageSno(String sno);-->
+	<select id="getAllcommentByMessageSno" resultMap="MyCommentByStep">
+		SELECT COMMENT.`cno`,cmessage,cdate,comment.`sno` FROM COMMENT,message,mc 
+		WHERE COMMENT.`cno`=MC.`cno` AND MC.`mno`=message.`mno` AND message.`sno`=#{sno}
+	</select>
+	
+	<!--public List<Comment> getAllcomment();  -->
+	<select id="getAllcomment" resultMap="MyCommentByStep">
+		SELECT * FROM COMMENT
+	</select>
+ 
+ </mapper>

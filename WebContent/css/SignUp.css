@@ -1,0 +1,49 @@
+label[class*="col-"]{
+    height:35px;
+    line-height:35px;
+}
+.divWrap{
+	position:absolute;
+	top:50px;
+	left:75px;
+	background:#ffffff;
+	width:1000px;
+	border:1px solid darkgray;
+	border-top:5px solid orange;
+}
+.signUp{
+	width:675px;
+	padding-top:50px;
+	padding-bottom:50px;
+	margin-left:50px;
+	border-right:2px solid lightgray;
+}
+.divWrap a:hover{
+	text-decoration:none;
+}
+.warningMsg{
+	margin-bottom:0;
+	padding:6px;
+	display:none;
+}
+.fastLogin{
+	position:absolute;
+	top:50px;
+	right:20px;
+	font-size:20px;
+	font-weight:bold;
+}
+.spanFont{
+	font-size:28px;
+	font-weight:bold;
+	color:#99ccff;
+	margin-top:15px;
+	margin-left:75px;
+}
+.myOk{
+	height:35px;
+	line-height:35px;
+	font-size:18px;
+	color:green;
+	display:none;
+}

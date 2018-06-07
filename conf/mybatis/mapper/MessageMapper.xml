@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="cn.edu.scau.dao.MessageMapper">
+ 
+ <!-- public void saveMessage(Message message); -->
+ <insert id="saveMessage">
+ 	INSERT INTO message(mmessage,mdate,sno) VALUES(#{mmessage},#{mdate},#{student.sno})
+ </insert>
+ 
+ 	 <resultMap type="cn.edu.scau.bean.Message" id="MyMessageByStep">
+	 	<id column="mno" property="mno"/>
+	 	<result column="mmessage" property="mmessage"/>
+	 	<result column="mdate" property="mdate"/>
+	 	<!-- association定义关联对象的封装规则
+	 		select:表明当前属性是调用select指定的方法查出的结果
+	 		column:指定将哪一列的值传给这个方法
+	 		
+	 		流程：使用select指定的方法（传入column指定的这列参数的值）查出对象，并封装给property指定的属性
+	 	 -->
+	 	 <association property="student"
+	 	 select="cn.edu.scau.dao.StudentMapper.getStuBySno"
+	 	 column="sno">
+	 	 </association>
+	 </resultMap>
+ 
+ <!--public List<Message> getAllMessage();  -->
+ <select id="getAllMessage" resultMap="MyMessageByStep">
+ 	SELECT * FROM message ORDER BY mno DESC
+ </select>
+ 
+ <!--public Message getMessageByMno(Integer mno);  -->
+ <select id="getMessageByMno" resultMap="MyMessageByStep"> 
+ 		select * from message where mno=#{mno}
+ 	</select>
+	 
+	 <!-- 	public void deleteByMno(Integer mno); -->
+	 <delete id="deleteByMno">
+	 	DELETE FROM message WHERE mno=#{mno}
+	 </delete>
+	
+	<!--  public List<Message> getMessageBySno(String sno);-->
+	<select id="getMessageBySno" resultMap="MyMessageByStep">
+		SELECT * FROM message WHERE sno=#{sno}
+	</select>
+	
+	
+ </mapper>

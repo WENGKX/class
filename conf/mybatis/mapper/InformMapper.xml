@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="cn.edu.scau.dao.InformMapper">
+ 
+ 	<!-- public void saveInform(Inform inform); -->
+ 	<insert id="saveInform">
+		insert into inform(idate,imessage) 
+		values(#{idate},#{imessage})
+	</insert>
+ 
+   <!-- public List<Inform> getAllInfo(); -->
+   <select id="getAllInfo" resultType="cn.edu.scau.bean.Inform">
+   		select * from inform order by ino desc
+   </select>
+ 
+ </mapper>

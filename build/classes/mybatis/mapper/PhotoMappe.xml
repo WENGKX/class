@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="cn.edu.scau.dao.PhotoMapper">
+ 
+ 		<!--public void saveImage(Photo photo);  -->
+ 		<insert id="saveImage">
+ 			INSERT INTO photo(pdate,pdescribe,image) VALUES(#{pdate},#{pdescribe},#{image})
+ 		</insert>
+ 		
+ 		<!-- public List<Photo> getImages(); -->
+ 		<select id="getImages" resultType="cn.edu.scau.bean.Photo">
+ 			SELECT * FROM photo
+ 		</select>
+ 		
+ 		<!-- public Photo getImageByPno(String pno); -->
+ 		<select id="getImageByPno" resultType="cn.edu.scau.bean.Photo">
+ 			SELECT * FROM photo where pno=#{pno}
+ 		</select>
+ 		
+ </mapper>

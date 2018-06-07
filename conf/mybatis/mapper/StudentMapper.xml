@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="cn.edu.scau.dao.StudentMapper">
+ 
+ 		<!--public Student getStuBySno(String sno);  -->
+ 		<select id="getStuBySno" resultType="cn.edu.scau.bean.Student">
+ 			select * from student where sno=#{sno}
+ 		</select>
+ 		
+ 		<!--  public Student getStuByDuty(String duty); -->
+ 		<select id="getStuByDuty" resultType="cn.edu.scau.bean.Student">
+ 			select * from student where duty=#{duty}
+ 		</select>
+ 		
+ 		<!-- public void regist(Student student); -->
+ 		<insert id="regist" parameterType="cn.edu.scau.bean.Student">
+ 			insert into student(sno,sname,grade,password,duty,status) 
+ 			values(#{sno},#{sname},#{grade},#{password},#{duty},#{status})
+ 		</insert>
+ 		
+ 		<!-- public List<Student> getStusWhereStatus(); -->
+ 		<select id="getStusWhereStatus" resultType="cn.edu.scau.bean.Student">
+ 			SELECT * FROM student WHERE STATUS=#{status}
+ 		</select>
+ 		
+ 		<!-- 	public void confirmBySno(String sno); -->
+ 		<update id="confirmBySno">
+ 			UPDATE student SET STATUS='1' WHERE sno=#{sno}
+ 		</update>
+ 		
+ 		<!-- 	public void logoutBySno(String sno); -->
+ 		<delete id="logoutBySno">
+ 			delete from student where sno=#{sno}
+ 		</delete>
+ 
+ 		<!-- public List<Student> getStusWhereStatusAndSno(String status, String sno); -->
+ 		<select id="getStusWhereStatusAndSno" resultType="cn.edu.scau.bean.Student">
+ 			SELECT * FROM student WHERE STATUS=#{status} AND sno!=#{sno}
+ 		</select>
+ 		
+ 		<!-- public void updateBySGD(Student stu); -->
+ 		<update id="updateBySGD">
+ 			update student set sname=#{sname},grade=#{grade},duty=#{duty} where sno=#{sno}
+ 		</update>
+ 		
+ 		<!--  public void changePassword(String sno, String newPwd);-->
+ 		<update id="changePassword">
+ 			update student set password=#{newPwd} where sno=#{sno}
+ 		</update>
+ 		
+ 		<!--public List<Student> advanceQuery(Student student);  -->
+ 		<select id="advanceQuery" resultType="cn.edu.scau.bean.Student">
+ 			<!-- bind：可以将OGNL表达式的值绑定到一个变量中，方便后来引用这个变量的值 -->
+	  		<bind name="_sno" value="'%'+sno+'%'"/>
+	  		<bind name="_sname" value="'%'+sname+'%'"/>
+	  		<bind name="_grade" value="'%'+grade+'%'"/>
+ 			select * from student 
+			<trim prefix="where" suffixOverrides="and">
+				status=#{status} and
+				<if test="sno!=null &amp;&amp; sno!=&quot;&quot;">
+					sno like #{_sno} and
+				</if>
+				<if test="sname!=null &amp;&amp; sname!=&quot;&quot;">
+					sname like #{_sname} and
+				</if>
+				<if test="grade!=null and grade !=&quot;&quot;">
+					grade like #{_grade} and
+				</if>
+				<if test="duty!=null and duty !=&quot;&quot;">
+					duty=#{duty}
+				</if>
+			</trim>	
+ 		</select>
+ 		
+ 		
+ </mapper>

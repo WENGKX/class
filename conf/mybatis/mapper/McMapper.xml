@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="cn.edu.scau.dao.McMapper">
+ 	
+ 	
+ 	<resultMap type="cn.edu.scau.bean.Mc" id="myMcsByStep">
+	
+	 	<!-- association定义关联对象的封装规则
+	 		select:表明当前属性是调用select指定的方法查出的结果
+	 		column:指定将哪一列的值传给这个方法
+	 		
+	 		流程：使用select指定的方法（传入column指定的这列参数的值）查出对象，并封装给property指定的属性
+	 	 -->
+	 	 <association property="message"
+	 	 select="cn.edu.scau.dao.MessageMapper.getMessageByMno"
+	 	 column="mno">
+	 	 </association>
+	 	  <association property="comment"
+	 	 select="cn.edu.scau.dao.CommentMapper.getCommentByCno"
+	 	 column="cno">
+	 	 </association>
+	 	 
+	 	 
+	 </resultMap>
+ 	<!--public List<Mc> getAllMcs();  -->
+	<select id="getAllMcs" resultMap="myMcsByStep">
+		SELECT * FROM mc
+	</select> 	
+ 	
+ 	<!-- public void deleteByMno(Integer mno); -->
+	<delete id="deleteByMno">
+		DELETE FROM mc WHERE mno=#{mno}
+	</delete>
+
+	<!-- public void saveMc(Mc mc); -->
+	<insert id="saveMc">
+		INSERT INTO mc(mno,cno) VALUES(#{message.mno},#{comment.cno})
+	</insert>
+
+	<!--  	public List<Mc> getMcsByMno(Integer mno);-->
+	<select id="getMcsByMno" resultMap="myMcsByStep">
+		SELECT * FROM mc WHERE mno=#{mno}
+	</select>
+
+ 	
+ </mapper>
